@@ -26,7 +26,4 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
         run: echo "$COMMIT_MESSAGES"
-      -  run: echo ${{ github.event_name == 'push' && contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}  
-      -  run: echo ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
-      -  run: echo ${{ github.event_name == 'push'}}
-      -  run: echo ${{ contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
+      -  run: echo ${{ secrets.DISCORD_WEBHOOK_URL }}
