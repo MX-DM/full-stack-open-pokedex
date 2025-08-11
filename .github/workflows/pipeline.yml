@@ -34,7 +34,28 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
-  
+      - name: Notify Discord on success
+        if: ${{ success() && github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
+        uses: rjstone/discord-webhook-notify@v2.2.1
+        with:
+          severity: info
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          details: "A new version of Pokedex deployed to https://full-stack-open-pokedex-wuoz.onrender.com by ${{ github.actor }}"
+
+  notify_failure:
+    needs: [simple_deployment_pipeline]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rjstone/discord-webhook-notify@v2.2.1
+        with:
+          severity: error
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          details: |
+            Build failed for commit ${{ github.sha }} by ${{ github.actor }}.
+            Commit message: ${{ github.event.head_commit.message }}
+            Link: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+        
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
