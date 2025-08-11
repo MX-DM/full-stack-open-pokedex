@@ -40,8 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && !contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
     steps:
-      - run: ${{ github.event_name == 'push'}}
-      - run: echo ${{contains(join(toJson(github.event.commits.*.message), ' '), '#skip') }}
       - uses: actions/checkout@v4
       - name: Bump patch version and push tag
         uses: anothrNick/github-tag-action@c360518fb8131e99795f8208f8a6105ceca55ec2
