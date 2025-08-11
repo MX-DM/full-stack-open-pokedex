@@ -1,8 +1,9 @@
 name: Periodic health check
 
 on:
-  schedule:
-    - cron: "0 16 * * *"
+  # Cron disabled to save monthly processing hours
+  # schedule:
+    # - cron: "0 16 * * *"
   workflow_dispatch:
   push:
     branches:
