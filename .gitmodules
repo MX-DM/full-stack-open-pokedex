@@ -1,0 +1,3 @@
+[submodule "ownRepository/blapp"]
+	path = ownRepository/blapp
+	url = https://github.com/MX-DM/blapp.git
